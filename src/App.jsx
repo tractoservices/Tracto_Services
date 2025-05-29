@@ -48,6 +48,14 @@ export default function App() {
       style={{ backgroundImage: `url(${backgroundUrl})` }}
     >
       <div className="bg-black/70 w-full min-h-screen">
+
+        <nav className="flex justify-end gap-6 px-10 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider">
+  {['Inicio', 'Nosotros', 'Servicio Técnico', 'Almacén', 'Contacto'].map((label, index) => (
+    <a key={index} href="#" className="hover:text-red-500 transition-colors duration-200">
+      {label}
+    </a>
+  ))}
+</nav>
         <section className="flex flex-col items-center justify-center h-screen text-center px-6">
           <h1 className="text-6xl font-extrabold text-red-600 drop-shadow-xl">TRACTO SERVICES</h1>
           <p className="mt-6 text-2xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>

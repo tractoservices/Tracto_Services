@@ -49,13 +49,16 @@ export default function App() {
     >
       <div className="bg-black/70 w-full min-h-screen">
 
+        {/* Barra de navegación superior */}
         <nav className="flex justify-end gap-6 px-10 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider">
-  {['Inicio', 'Nosotros', 'Servicio Técnico', 'Almacén', 'Contacto'].map((label, index) => (
-    <a key={index} href="#" className="hover:text-red-500 transition-colors duration-200">
-      {label}
-    </a>
-  ))}
-</nav>
+          {['Inicio', 'Nosotros', 'Servicio Técnico', 'Almacén', 'Contacto'].map((label, index) => (
+            <a key={index} href="#" className="hover:text-red-500 transition-colors duration-200">
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Sección principal */}
         <section className="flex flex-col items-center justify-center h-screen text-center px-6">
           <h1 className="text-6xl font-extrabold text-red-600 drop-shadow-xl">TRACTO SERVICES</h1>
           <p className="mt-6 text-2xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
@@ -84,22 +87,14 @@ export default function App() {
           )}
         </section>
 
+        {/* Servicios */}
         <section className="py-16 px-6 bg-white text-black text-center">
           <h2 className="text-4xl font-bold mb-10">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              {
-                title: 'Motores',
-                desc: 'Reparación de motores Cummins, ISX, Caterpillar y más.',
-              },
-              {
-                title: 'Transmisiones',
-                desc: 'Diagnóstico y reparación profesional de transmisiones.',
-              },
-              {
-                title: 'Diferenciales',
-                desc: 'Mantenimiento de diferenciales pesados y livianos.',
-              },
+              { title: 'Motores', desc: 'Reparación de motores Cummins, ISX, Caterpillar y más.' },
+              { title: 'Transmisiones', desc: 'Diagnóstico y reparación profesional de transmisiones.' },
+              { title: 'Diferenciales', desc: 'Mantenimiento de diferenciales pesados y livianos.' },
             ].map((s, i) => (
               <div key={i} className="bg-gray-100 rounded-lg p-6 shadow-md">
                 <h3 className="text-xl font-bold mb-2">{s.title}</h3>
@@ -109,6 +104,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Galería */}
         <section className="py-16 px-6 bg-black text-white text-center">
           <h2 className="text-4xl font-bold mb-10">Galería de Trabajos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -124,6 +120,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Mapa */}
         <section className="py-16 px-6 bg-white text-black text-center">
           <h2 className="text-4xl font-bold mb-6">Ubicación</h2>
           <div className="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
@@ -140,6 +137,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Contacto */}
         <section className="py-16 px-6 bg-black text-white text-center">
           <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
           <div className="flex flex-col items-center gap-4 text-lg">
@@ -148,6 +146,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Redes sociales */}
         <section className="py-16 px-6 bg-white text-black text-center">
           <h2 className="text-4xl font-bold mb-6">Síguenos en redes sociales</h2>
           <div className="flex justify-center gap-8 text-3xl">
@@ -157,6 +156,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Footer */}
         <footer className="bg-black text-center text-sm text-gray-400 py-6">
           &copy; {new Date().getFullYear()} Tracto Services. Todos los derechos reservados.
         </footer>
@@ -164,4 +164,3 @@ export default function App() {
     </div>
   );
 }
-

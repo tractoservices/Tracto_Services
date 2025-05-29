@@ -17,10 +17,13 @@ export default function App() {
 
   useEffect(() => {
     const loadImage = async () => {
-      const { data } = await supabase.storage.from('backgrounds').download('background.jpg');
-      if (data) {
-        const url = URL.createObjectURL(data);
-        setBackgroundUrl(url);
+      const { data } = await supabase.storage.from('backgrounds').list();
+      const fileExists = data?.some(file => file.name === 'background.jpg');
+      if (fileExists) {
+        const { data: publicUrlData } = supabase.storage.from('backgrounds').getPublicUrl('background.jpg');
+        if (publicUrlData?.publicUrl) {
+          setBackgroundUrl(publicUrlData.publicUrl);
+        }
       }
     };
     loadImage();
@@ -40,8 +43,10 @@ export default function App() {
     await supabase.storage.from('backgrounds').upload('background.jpg', file, {
       upsert: true,
     });
-    const url = URL.createObjectURL(file);
-    setBackgroundUrl(url);
+    const { data: publicUrlData } = supabase.storage.from('backgrounds').getPublicUrl('background.jpg');
+    if (publicUrlData?.publicUrl) {
+      setBackgroundUrl(publicUrlData.publicUrl);
+    }
   };
 
   const scrollTo = (id) => {
@@ -63,7 +68,8 @@ export default function App() {
       style={{ backgroundImage: `url(${backgroundUrl})` }}
     >
       <div className="bg-black/70 w-full min-h-screen">
-        {/* WhatsApp Button */}
+
+        {/* Botón WhatsApp */}
         <a
           href="https://wa.me/573112107708"
           target="_blank"
@@ -73,7 +79,7 @@ export default function App() {
           📲 WhatsApp
         </a>
 
-        {/* Navigation */}
+        {/* Navegación */}
         <nav className="flex justify-end gap-4 px-6 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider sticky top-0 z-40 shadow-md backdrop-blur">
           {[
             { label: 'Inicio', id: 'inicio' },
@@ -130,7 +136,7 @@ export default function App() {
           </p>
         </section>
 
-        {/* SERVICIO */}
+        {/* SERVICIOS */}
         <section id="servicio" className="py-20 px-6 bg-black text-white text-center border-b border-white/10">
           <h2 className="text-4xl font-bold mb-10 underline decoration-red-600 decoration-4 underline-offset-4">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -163,7 +169,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* FORMULARIO DE CONTACTO */}
+        {/* CONTACTO */}
         <section id="contacto" className="py-20 px-6 bg-black text-white text-center">
           <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
           {mensajeEnviado && <p className="text-green-400 mb-4">✅ Mensaje enviado correctamente.</p>}
@@ -204,7 +210,7 @@ export default function App() {
           </form>
         </section>
 
-        {/* REDES */}
+        {/* REDES SOCIALES */}
         <section className="py-12 px-6 bg-white text-black text-center">
           <h2 className="text-2xl font-bold mb-4">Síguenos en redes sociales</h2>
           <div className="flex justify-center gap-8 text-3xl">

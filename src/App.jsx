@@ -12,6 +12,8 @@ export default function App() {
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [adminKey, setAdminKey] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [formData, setFormData] = useState({ nombre: '', correo: '', mensaje: '' });
+  const [mensajeEnviado, setMensajeEnviado] = useState(false);
 
   useEffect(() => {
     const loadImage = async () => {
@@ -47,14 +49,32 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { nombre, correo, mensaje } = formData;
+    await supabase.from('mensajes').insert([{ nombre, correo, mensaje }]);
+    setMensajeEnviado(true);
+    setFormData({ nombre: '', correo: '', mensaje: '' });
+  };
+
   return (
     <div
-      className="min-h-screen bg-cover bg-center text-white"
+      className="min-h-screen bg-cover bg-center text-white relative"
       style={{ backgroundImage: `url(${backgroundUrl})` }}
     >
       <div className="bg-black/70 w-full min-h-screen">
-        {/* Barra de navegación superior */}
-        <nav className="flex justify-end gap-4 px-6 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider sticky top-0 z-50 shadow-md backdrop-blur">
+        {/* WhatsApp Button */}
+        <a
+          href="https://wa.me/573112107708"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg text-sm"
+        >
+          📲 WhatsApp
+        </a>
+
+        {/* Navigation */}
+        <nav className="flex justify-end gap-4 px-6 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider sticky top-0 z-40 shadow-md backdrop-blur">
           {[
             { label: 'Inicio', id: 'inicio' },
             { label: 'Nosotros', id: 'nosotros' },
@@ -72,7 +92,7 @@ export default function App() {
           ))}
         </nav>
 
-        {/* Sección INICIO */}
+        {/* INICIO */}
         <section id="inicio" className="flex flex-col items-center justify-center h-screen text-center px-6 border-b border-white/20">
           <h1 className="text-6xl font-extrabold text-red-600 drop-shadow-xl">TRACTO SERVICES</h1>
           <p className="mt-6 text-2xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
@@ -101,13 +121,16 @@ export default function App() {
           )}
         </section>
 
-        {/* Sección NOSOTROS */}
+        {/* NOSOTROS */}
         <section id="nosotros" className="py-20 px-6 bg-white text-black text-center border-b border-gray-300">
           <h2 className="text-4xl font-bold mb-4">Nosotros</h2>
-          <p className="max-w-3xl mx-auto text-lg">En Tracto Services nos dedicamos a ofrecer soluciones profesionales en mecánica diésel pesada y liviana. Nuestro especialista Luis E. Cárdenas lidera un equipo con experiencia y compromiso.</p>
+          <p className="max-w-3xl mx-auto text-lg">
+            En Tracto Services nos dedicamos a ofrecer soluciones profesionales en mecánica diésel pesada y liviana.
+            Nuestro especialista Luis E. Cárdenas lidera un equipo con experiencia y compromiso.
+          </p>
         </section>
 
-        {/* Sección SERVICIOS */}
+        {/* SERVICIO */}
         <section id="servicio" className="py-20 px-6 bg-black text-white text-center border-b border-white/10">
           <h2 className="text-4xl font-bold mb-10 underline decoration-red-600 decoration-4 underline-offset-4">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -124,7 +147,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Sección GALERÍA */}
+        {/* GALERÍA */}
         <section id="galeria" className="py-20 px-6 bg-white text-black text-center border-b border-gray-300">
           <h2 className="text-4xl font-bold mb-10">Galería de Trabajos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -140,16 +163,48 @@ export default function App() {
           </div>
         </section>
 
-        {/* Sección CONTACTO */}
+        {/* FORMULARIO DE CONTACTO */}
         <section id="contacto" className="py-20 px-6 bg-black text-white text-center">
           <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
-          <div className="flex flex-col items-center gap-4 text-lg">
-            <a href="tel:3112107708" className="flex items-center gap-2 hover:text-red-500"><Phone /> 3112107708</a>
-            <a href="mailto:tractoservices@gmail.com" className="flex items-center gap-2 hover:text-red-500"><Mail /> tractoservices@gmail.com</a>
-          </div>
+          {mensajeEnviado && <p className="text-green-400 mb-4">✅ Mensaje enviado correctamente.</p>}
+          <form onSubmit={handleSubmit} className="max-w-xl mx-auto text-left bg-white text-black p-6 rounded-lg shadow-xl space-y-4">
+            <div>
+              <label className="block text-sm font-medium">Nombre</label>
+              <input
+                type="text"
+                value={formData.nombre}
+                onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                required
+                className="w-full p-2 rounded border"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Correo</label>
+              <input
+                type="email"
+                value={formData.correo}
+                onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
+                required
+                className="w-full p-2 rounded border"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Mensaje</label>
+              <textarea
+                rows="4"
+                value={formData.mensaje}
+                onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
+                required
+                className="w-full p-2 rounded border"
+              ></textarea>
+            </div>
+            <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
+              Enviar mensaje
+            </button>
+          </form>
         </section>
 
-        {/* Redes sociales */}
+        {/* REDES */}
         <section className="py-12 px-6 bg-white text-black text-center">
           <h2 className="text-2xl font-bold mb-4">Síguenos en redes sociales</h2>
           <div className="flex justify-center gap-8 text-3xl">
@@ -159,7 +214,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Footer */}
+        {/* FOOTER */}
         <footer className="bg-black text-center text-sm text-gray-400 py-6 border-t border-white/10">
           &copy; {new Date().getFullYear()} Tracto Services. Todos los derechos reservados.
         </footer>
@@ -167,4 +222,3 @@ export default function App() {
     </div>
   );
 }
-

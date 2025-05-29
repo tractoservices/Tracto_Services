@@ -44,17 +44,17 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center text-white p-4 md:p-6 lg:p-10"
+      className="min-h-screen bg-cover bg-center text-white"
       style={{ backgroundImage: `url(${backgroundUrl})` }}
     >
-      <div className="backdrop-blur-sm bg-black/70 rounded-xl p-6">
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold text-red-600 drop-shadow-lg">TRACTO SERVICES</h1>
-          <p className="mt-4 text-xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
-          <p className="mt-2 italic text-gray-400">Diseño editable con fondo personalizado</p>
+      <div className="bg-black/70 w-full min-h-screen">
+        <section className="flex flex-col items-center justify-center h-screen text-center px-6">
+          <h1 className="text-6xl font-extrabold text-red-600 drop-shadow-xl">TRACTO SERVICES</h1>
+          <p className="mt-6 text-2xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
+          <p className="mt-2 text-md italic text-gray-300">Diseño editable con fondo personalizado</p>
 
           {!isAdmin && (
-            <div className="mt-4">
+            <div className="mt-6">
               <input
                 type="password"
                 placeholder="Clave de administrador"
@@ -69,52 +69,61 @@ export default function App() {
           )}
 
           {isAdmin && (
-            <div className="mt-4">
+            <div className="mt-6">
               <label className="block mb-2">Cambiar fondo:</label>
               <input type="file" accept="image/*" onChange={handleUpload} />
             </div>
           )}
-        </header>
+        </section>
 
-        <section className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-6">Nuestros Servicios</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {["Motores", "Transmisiones", "Diferenciales"].map((serv, i) => (
-              <div key={i} className="bg-white text-black rounded-xl p-6 shadow-lg">
-                <h3 className="text-xl font-semibold mb-2">{serv}</h3>
-                <p className="text-sm">
-                  {serv === "Motores" && "Reparación de motores Cummins, ISX, Caterpillar y más."}
-                  {serv === "Transmisiones" && "Diagnóstico y reparación profesional de transmisiones."}
-                  {serv === "Diferenciales" && "Mantenimiento de diferenciales pesados y livianos."}
-                </p>
+        <section className="py-16 px-6 bg-white text-black text-center">
+          <h2 className="text-4xl font-bold mb-10">Nuestros Servicios</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Motores',
+                desc: 'Reparación de motores Cummins, ISX, Caterpillar y más.',
+              },
+              {
+                title: 'Transmisiones',
+                desc: 'Diagnóstico y reparación profesional de transmisiones.',
+              },
+              {
+                title: 'Diferenciales',
+                desc: 'Mantenimiento de diferenciales pesados y livianos.',
+              },
+            ].map((s, i) => (
+              <div key={i} className="bg-gray-100 rounded-lg p-6 shadow-md">
+                <h3 className="text-xl font-bold mb-2">{s.title}</h3>
+                <p className="text-sm text-gray-700">{s.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="text-center mb-12">
-          <h2 className="text-2xl font-bold mb-4">Galería de Trabajos</h2>
+        <section className="py-16 px-6 bg-black text-white text-center">
+          <h2 className="text-4xl font-bold mb-10">Galería de Trabajos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white rounded-lg overflow-hidden shadow-md">
+              <div key={i} className="overflow-hidden rounded-lg shadow-lg">
                 <img
-                  src={`https://via.placeholder.com/400x250?text=Trabajo+${i}`}
+                  src={`https://via.placeholder.com/500x300?text=Trabajo+${i}`}
                   alt={`Trabajo ${i}`}
-                  className="w-full h-auto"
+                  className="w-full h-auto transition-transform hover:scale-105"
                 />
               </div>
             ))}
           </div>
         </section>
 
-        <section className="text-center mb-12">
-          <h2 className="text-2xl font-bold mb-4">Ubicación</h2>
-          <div className="rounded-xl overflow-hidden shadow-lg">
+        <section className="py-16 px-6 bg-white text-black text-center">
+          <h2 className="text-4xl font-bold mb-6">Ubicación</h2>
+          <div className="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
             <iframe
               title="Ubicación Tracto Services"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.711102423231!2d-74.16754732524391!3d4.675238341292252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9e0623a1c855%3A0xc52b0845b0f11970!2sParqueadero%20el%20Play%C3%B3n!5e0!3m2!1ses!2sco!4v1717000000000"
               width="100%"
-              height="300"
+              height="350"
               style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
@@ -123,29 +132,28 @@ export default function App() {
           </div>
         </section>
 
-        <section className="text-center mb-12">
-          <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
+        <section className="py-16 px-6 bg-black text-white text-center">
+          <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
           <div className="flex flex-col items-center gap-4 text-lg">
             <a href="tel:3112107708" className="flex items-center gap-2 hover:text-red-500"><Phone /> 3112107708</a>
             <a href="mailto:tractoservices@gmail.com" className="flex items-center gap-2 hover:text-red-500"><Mail /> tractoservices@gmail.com</a>
           </div>
         </section>
 
-        <section className="text-center mb-12">
-          <h2 className="text-2xl font-bold mb-4">Síguenos en redes sociales</h2>
-          <div className="flex justify-center gap-6 text-3xl">
+        <section className="py-16 px-6 bg-white text-black text-center">
+          <h2 className="text-4xl font-bold mb-6">Síguenos en redes sociales</h2>
+          <div className="flex justify-center gap-8 text-3xl">
             <a href="https://instagram.com/tracto_services" target="_blank" rel="noreferrer" className="hover:text-pink-500"><Instagram /></a>
             <a href="https://facebook.com/tracto_services" target="_blank" rel="noreferrer" className="hover:text-blue-500"><Facebook /></a>
-            <a href="https://tiktok.com/@tracto_services" target="_blank" rel="noreferrer" className="hover:text-white"><SiTiktok /></a>
+            <a href="https://tiktok.com/@tracto_services" target="_blank" rel="noreferrer" className="hover:text-gray-800"><SiTiktok /></a>
           </div>
         </section>
 
-        <footer className="text-center text-sm text-gray-400 pt-6">
+        <footer className="bg-black text-center text-sm text-gray-400 py-6">
           &copy; {new Date().getFullYear()} Tracto Services. Todos los derechos reservados.
         </footer>
       </div>
     </div>
   );
 }
-
 

@@ -42,24 +42,38 @@ export default function App() {
     setBackgroundUrl(url);
   };
 
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center text-white"
       style={{ backgroundImage: `url(${backgroundUrl})` }}
     >
       <div className="bg-black/70 w-full min-h-screen">
-
         {/* Barra de navegación superior */}
-        <nav className="flex justify-end gap-6 px-10 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider">
-          {['Inicio', 'Nosotros', 'Servicio Técnico', 'Almacén', 'Contacto'].map((label, index) => (
-            <a key={index} href="#" className="hover:text-red-500 transition-colors duration-200">
-              {label}
-            </a>
+        <nav className="flex justify-end gap-4 px-6 py-4 bg-black bg-opacity-80 text-sm font-semibold uppercase tracking-wider sticky top-0 z-50 shadow-md backdrop-blur">
+          {[
+            { label: 'Inicio', id: 'inicio' },
+            { label: 'Nosotros', id: 'nosotros' },
+            { label: 'Servicio Técnico', id: 'servicio' },
+            { label: 'Almacén', id: 'galeria' },
+            { label: 'Contacto', id: 'contacto' },
+          ].map((item, index) => (
+            <button
+              key={index}
+              onClick={() => scrollTo(item.id)}
+              className="px-4 py-2 rounded-full bg-white/10 hover:bg-red-600 transition-colors"
+            >
+              {item.label}
+            </button>
           ))}
         </nav>
 
-        {/* Sección principal */}
-        <section className="flex flex-col items-center justify-center h-screen text-center px-6">
+        {/* Sección INICIO */}
+        <section id="inicio" className="flex flex-col items-center justify-center h-screen text-center px-6 border-b border-white/20">
           <h1 className="text-6xl font-extrabold text-red-600 drop-shadow-xl">TRACTO SERVICES</h1>
           <p className="mt-6 text-2xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
           <p className="mt-2 text-md italic text-gray-300">Diseño editable con fondo personalizado</p>
@@ -87,16 +101,22 @@ export default function App() {
           )}
         </section>
 
-        {/* Servicios */}
-        <section className="py-16 px-6 bg-white text-black text-center">
-          <h2 className="text-4xl font-bold mb-10">Nuestros Servicios</h2>
+        {/* Sección NOSOTROS */}
+        <section id="nosotros" className="py-20 px-6 bg-white text-black text-center border-b border-gray-300">
+          <h2 className="text-4xl font-bold mb-4">Nosotros</h2>
+          <p className="max-w-3xl mx-auto text-lg">En Tracto Services nos dedicamos a ofrecer soluciones profesionales en mecánica diésel pesada y liviana. Nuestro especialista Luis E. Cárdenas lidera un equipo con experiencia y compromiso.</p>
+        </section>
+
+        {/* Sección SERVICIOS */}
+        <section id="servicio" className="py-20 px-6 bg-black text-white text-center border-b border-white/10">
+          <h2 className="text-4xl font-bold mb-10 underline decoration-red-600 decoration-4 underline-offset-4">Nuestros Servicios</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { title: 'Motores', desc: 'Reparación de motores Cummins, ISX, Caterpillar y más.' },
               { title: 'Transmisiones', desc: 'Diagnóstico y reparación profesional de transmisiones.' },
               { title: 'Diferenciales', desc: 'Mantenimiento de diferenciales pesados y livianos.' },
             ].map((s, i) => (
-              <div key={i} className="bg-gray-100 rounded-lg p-6 shadow-md">
+              <div key={i} className="bg-white text-black rounded-lg p-6 shadow-md">
                 <h3 className="text-xl font-bold mb-2">{s.title}</h3>
                 <p className="text-sm text-gray-700">{s.desc}</p>
               </div>
@@ -104,8 +124,8 @@ export default function App() {
           </div>
         </section>
 
-        {/* Galería */}
-        <section className="py-16 px-6 bg-black text-white text-center">
+        {/* Sección GALERÍA */}
+        <section id="galeria" className="py-20 px-6 bg-white text-black text-center border-b border-gray-300">
           <h2 className="text-4xl font-bold mb-10">Galería de Trabajos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -120,25 +140,8 @@ export default function App() {
           </div>
         </section>
 
-        {/* Mapa */}
-        <section className="py-16 px-6 bg-white text-black text-center">
-          <h2 className="text-4xl font-bold mb-6">Ubicación</h2>
-          <div className="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
-            <iframe
-              title="Ubicación Tracto Services"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.711102423231!2d-74.16754732524391!3d4.675238341292252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9e0623a1c855%3A0xc52b0845b0f11970!2sParqueadero%20el%20Play%C3%B3n!5e0!3m2!1ses!2sco!4v1717000000000"
-              width="100%"
-              height="350"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </section>
-
-        {/* Contacto */}
-        <section className="py-16 px-6 bg-black text-white text-center">
+        {/* Sección CONTACTO */}
+        <section id="contacto" className="py-20 px-6 bg-black text-white text-center">
           <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
           <div className="flex flex-col items-center gap-4 text-lg">
             <a href="tel:3112107708" className="flex items-center gap-2 hover:text-red-500"><Phone /> 3112107708</a>
@@ -147,8 +150,8 @@ export default function App() {
         </section>
 
         {/* Redes sociales */}
-        <section className="py-16 px-6 bg-white text-black text-center">
-          <h2 className="text-4xl font-bold mb-6">Síguenos en redes sociales</h2>
+        <section className="py-12 px-6 bg-white text-black text-center">
+          <h2 className="text-2xl font-bold mb-4">Síguenos en redes sociales</h2>
           <div className="flex justify-center gap-8 text-3xl">
             <a href="https://instagram.com/tracto_services" target="_blank" rel="noreferrer" className="hover:text-pink-500"><Instagram /></a>
             <a href="https://facebook.com/tracto_services" target="_blank" rel="noreferrer" className="hover:text-blue-500"><Facebook /></a>
@@ -157,10 +160,11 @@ export default function App() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-black text-center text-sm text-gray-400 py-6">
+        <footer className="bg-black text-center text-sm text-gray-400 py-6 border-t border-white/10">
           &copy; {new Date().getFullYear()} Tracto Services. Todos los derechos reservados.
         </footer>
       </div>
     </div>
   );
 }
+

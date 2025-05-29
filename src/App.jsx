@@ -1,14 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { Phone, Mail, Instagram, Facebook } from 'lucide-react';
 import { SiTiktok } from 'react-icons/si';
 
+const supabase = createClient(
+  'https://ebqfspgmnggizmgcznao.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVicWZzcGdtbmdnaXptZ2N6bmFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MjU1NDQsImV4cCI6MjA2NDEwMTU0NH0.WXAvcTUMtRJvUaFRcQVWuLo9mVxKEL65fg_DCDrf5X0'
+);
+
 export default function App() {
+  const [backgroundUrl, setBackgroundUrl] = useState('');
+  const [adminKey, setAdminKey] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      const { data } = await supabase.storage.from('backgrounds').download('background.jpg');
+      if (data) {
+        const url = URL.createObjectURL(data);
+        setBackgroundUrl(url);
+      }
+    };
+    loadImage();
+  }, []);
+
+  const handleLogin = () => {
+    if (adminKey === 'luistractos2025') {
+      setIsAdmin(true);
+    } else {
+      alert('Clave incorrecta');
+    }
+  };
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    await supabase.storage.from('backgrounds').upload('background.jpg', file, {
+      upsert: true,
+    });
+    const url = URL.createObjectURL(file);
+    setBackgroundUrl(url);
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <header className="text-center mb-12">
+    <div
+      className="min-h-screen bg-cover bg-center text-white p-6"
+      style={{ backgroundImage: `url(${backgroundUrl})` }}
+    >
+      <header className="text-center mb-12 bg-black bg-opacity-70 p-6 rounded-xl">
         <h1 className="text-5xl font-bold text-red-600">TRACTO SERVICES</h1>
         <p className="mt-4 text-xl">Especialistas en Motores Diésel, Transmisiones y Diferenciales</p>
-        <p className="mt-2 italic text-gray-400">Diseño actualizado - Bienvenido a nuestro sitio web oficial</p>
+        <p className="mt-2 italic text-gray-400">Diseño editable con fondo personalizado</p>
+
+        {!isAdmin && (
+          <div className="mt-4">
+            <input
+              type="password"
+              placeholder="Clave de administrador"
+              className="p-2 rounded text-black"
+              value={adminKey}
+              onChange={(e) => setAdminKey(e.target.value)}
+            />
+            <button className="ml-2 bg-red-600 px-4 py-2 rounded" onClick={handleLogin}>
+              Entrar
+            </button>
+          </div>
+        )}
+
+        {isAdmin && (
+          <div className="mt-4">
+            <label className="block mb-2">Cambiar fondo:</label>
+            <input type="file" accept="image/*" onChange={handleUpload} />
+          </div>
+        )}
       </header>
 
       <section className="text-center mb-12">
@@ -72,3 +136,4 @@ export default function App() {
     </div>
   );
 }
+
